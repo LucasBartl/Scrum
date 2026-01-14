@@ -50,5 +50,24 @@ export class Database {
         return data;
     }
 
+    delete(table, id){
+
+        //Verifica se nas tabelas existe um id correspondente ao selecionado
+        const rowIndex = this.#database[table].findIndex((row)=>row.id === id)
+        
+        // Verifica se encontrou o registro
+        if(rowIndex > -1){
+
+            this.#database[table].splice(rowIndex, 1);
+            this.#persist()
+            
+        }
+
+
+
+    }
+
+
+
 
 }

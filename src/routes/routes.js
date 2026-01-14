@@ -1,13 +1,14 @@
 //Importando banco de dados 
 import { Database } from "../database/database.js";
 import { randomUUID } from "node:crypto";
+import { buildParamsPath } from "../utils/buildParamspath.js";
 
 
 const database = new Database();
 export const routes = [
     {
         method: "GET",
-        path: "/tasks",
+        path: buildParamsPath("/tasks"),
         handler: ((req, res) => {
 
             const tasks = database.select("tasks")
@@ -20,7 +21,7 @@ export const routes = [
     },
     {
         method: "POST",
-        path: "/tasks",
+        path: buildParamsPath("/tasks"),
         handler:((req, res)=>{
 
         //Desestruturando o body para recuperar os parametros necessarios
@@ -47,14 +48,19 @@ export const routes = [
         })
     },
        {
-        method: "PUT",
-        path: "/tasks/:id",
+        method: "DELETE",
+        path: buildParamsPath("/tasks/:id"),
         handler: ((req, res) => {
 
-            const tasks = database.select("tasks")
+            //Recuperando número id de dentro de Params
+
+            const {id} = req.params;
+
+            //Selecionamos a tabela e o id q serao deletados
+            database.delete("tasks", id);
 
             return res
-                .end(JSON.stringify(tasks));
+                .end("Deletado!");
 
 
         })
