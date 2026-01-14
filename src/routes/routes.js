@@ -1,8 +1,10 @@
 //Importando banco de dados 
-import { Database } from "./database/database.js";
+import { Database } from "../database/database.js";
+import { randomUUID } from "node:crypto";
 
 
-const routes = [
+const database = new Database();
+export const routes = [
     {
         method: "GET",
         path: "/tasks",
@@ -37,14 +39,25 @@ const routes = [
         //Nessa parte devemos informar o nome da tabela que ira adicionar e o item 
         database.insert("tasks", task);
 
-        return res.end("Clientes criados");
+        return res
+        .writeHead(202)
+        .end();
 
 
         })
-    }
+    },
+       {
+        method: "PUT",
+        path: "/tasks/:id",
+        handler: ((req, res) => {
+
+            const tasks = database.select("tasks")
+
+            return res
+                .end(JSON.stringify(tasks));
 
 
-
-
+        })
+    },
 
 ]
