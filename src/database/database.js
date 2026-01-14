@@ -13,24 +13,24 @@ export class Database {
 
 
     //Metodo responsavel pela criaçao do arquivo de banco de dados 
-    #persist(){
+    #persist() {
 
         fs.writeFile(pathDatabase, JSON.stringify(this.#database));
 
     }
 
     //Metodo que vai carregar o banco de dados
-    constructor(){
-        fs.readFile(pathDatabase, "utf8").then(data =>{
+    constructor() {
+        fs.readFile(pathDatabase, "utf8").then(data => {
             this.#database = JSON.parse(data);
-        }).catch(()=>{
+        }).catch(() => {
             this.#persist();
         })
     }
 
 
     //Metodo criado para pesquisa de dados dentro de tabelas
-    select(table){
+    select(table) {
 
         const data = this.#database[table];
         return data;
@@ -38,36 +38,49 @@ export class Database {
     }
 
     //Metodo criado para inserçao de dados na propriedade database
-    insert(table, data){
+    insert(table, data) {
 
-        if(Array.isArray(this.#database[table])){
+        if (Array.isArray(this.#database[table])) {
             this.#database[table].push(data);
-        }else{
-             this.#database[table] = [data];
+        } else {
+            this.#database[table] = [data];
         }
 
         this.#persist();
         return data;
     }
 
-    delete(table, id){
+
+
+
+    delete(table, id) {
 
         //Verifica se nas tabelas existe um id correspondente ao selecionado
-        const rowIndex = this.#database[table].findIndex((row)=>row.id === id)
-        
+        const rowIndex = this.#database[table].findIndex((row) => row.id === id)
+
         // Verifica se encontrou o registro
-        if(rowIndex > -1){
+        if (rowIndex > -1) {
 
             this.#database[table].splice(rowIndex, 1);
             this.#persist()
-            
+
+        }
+    }
+
+    update(table, id,data) {
+
+        //Verifica se nas tabelas existe um id correspondente ao selecionado
+        const rowIndex = this.#database[table].findIndex((row) => row.id === id)
+
+        // Verifica se encontrou o registro
+        if (rowIndex > -1) {
+
+            this.#database[table][rowIndex] = {id, ...data};
+            this.#persist();
+
         }
 
 
 
     }
-
-
-
-
 }

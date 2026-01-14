@@ -22,39 +22,39 @@ export const routes = [
     {
         method: "POST",
         path: buildParamsPath("/tasks"),
-        handler:((req, res)=>{
+        handler: ((req, res) => {
 
-        //Desestruturando o body para recuperar os parametros necessarios
-        const { title, description, completed_at, created_at, updated_at } = req.body
+            //Desestruturando o body para recuperar os parametros necessarios
+            const { title, description, completed_at, created_at, updated_at } = req.body
 
-        const task = ({
-            id: randomUUID(),
-            title,
-            description, 
-            completed_at: null, 
-            created_at: Date(), 
-            updated_at: Date()
+            const task = ({
+                id: randomUUID(),
+                title,
+                description,
+                completed_at: null,
+                created_at: new Date().toISOString(),
+                updated_at: Date()
 
-        })
+            })
 
-        //Nessa parte devemos informar o nome da tabela que ira adicionar e o item 
-        database.insert("tasks", task);
+            //Nessa parte devemos informar o nome da tabela que ira adicionar e o item 
+            database.insert("tasks", task);
 
-        return res
-        .writeHead(202)
-        .end();
+            return res
+                .writeHead(202)
+                .end();
 
 
         })
     },
-       {
+    {
         method: "DELETE",
         path: buildParamsPath("/tasks/:id"),
         handler: ((req, res) => {
 
             //Recuperando número id de dentro de Params
 
-            const {id} = req.params;
+            const { id } = req.params;
 
             //Selecionamos a tabela e o id q serao deletados
             database.delete("tasks", id);
@@ -65,5 +65,29 @@ export const routes = [
 
         })
     },
+    {
+        method: "PUT",
+        path: buildParamsPath("/tasks/:id"),
+        handler: ((req, res) => {
+
+            const { title, description, updated_at} = req.body;
+            const { id } = req.params;
+
+
+            //Selecionamos a tabela e o id q serao deletados
+            database.update("tasks", id, {
+                title,
+                description,
+                updated_at: Date().toISOString(),
+                
+            })
+
+            return res
+                .end("Atualizado!");
+
+
+        })
+    },
+
 
 ]
