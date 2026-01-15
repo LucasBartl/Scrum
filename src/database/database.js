@@ -75,7 +75,7 @@ export class Database {
         // Verifica se encontrou o registro
         if (rowIndex > -1) {
 
-            this.#database[table][rowIndex] = {id, ...data};
+            this.#database[table][rowIndex] = {...this.#database[table][rowIndex], ...data};
             this.#persist();
 
         }
