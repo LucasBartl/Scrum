@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server",
   "scripts": {
-    "dev": "node --watch src/server"
+    "dev": "node --watch src/server",
+    "csv": "node --watch src/scripts/import-csv"
   },
   "keywords": [],
   "author": "",
