@@ -70,7 +70,7 @@ export const routes = [
         path: buildParamsPath("/tasks/:id"),
         handler: ((req, res) => {
 
-            const { title, description, updated_at} = req.body;
+            const { title, description, updated_at } = req.body;
             const { id } = req.params;
 
 
@@ -79,7 +79,7 @@ export const routes = [
                 title,
                 description,
                 updated_at: Date(),
-                
+
             })
 
             return res
@@ -88,6 +88,37 @@ export const routes = [
 
         })
     },
+    {
+        method: "PATCH",
+        path: buildParamsPath("/tasks/:id"),
+        handler: ((req, res) => {
 
+            const { completed_at } = req.body;
+            const { id } = req.params;
+
+
+            //Selecionamos a tabela e o id q serao deletados
+
+
+            if (completed_at === true) {
+
+                database.modific("tasks", id, {
+                    completed_at: new Date().toISOString(),    
+                })
+
+            } else {
+
+                database.modific("tasks", id, {
+                    completed_at:null,
+
+                })
+            }
+
+            return res
+                .end("Atualizado!");
+
+
+        })
+    },
 
 ]

@@ -74,7 +74,7 @@ export class Database {
 
         // Verifica se encontrou o registro
         if (rowIndex > -1) {
-
+        // Aqui envio os dados antigos {...this.#database[table][rowIndex] e mesclo com o novos de data
             this.#database[table][rowIndex] = {...this.#database[table][rowIndex], ...data};
             this.#persist();
 
@@ -83,4 +83,21 @@ export class Database {
 
 
     }
+
+    modific(table, id,data) {
+
+        //Verifica se nas tabelas existe um id correspondente ao selecionado
+        const rowIndex = this.#database[table].findIndex((row) => row.id === id);
+        // Verifica se encontrou o registro
+        if (rowIndex > -1) {
+        // Aqui envio os dados antigos {...this.#database[table][rowIndex] e mesclo com o novos de data
+            this.#database[table][rowIndex] = {...this.#database[table][rowIndex], ...data};
+            this.#persist();
+
+        }
+
+
+
+    }
+
 }
